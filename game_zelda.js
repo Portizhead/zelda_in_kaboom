@@ -30,25 +30,41 @@ loadSprite('stairs', 'LIryyEl.png');
 loadSprite('back-ground', 'HfiQS1I.png');
 loadSprite('grass', 'bFUrqrI.png');
 loadSprite('hole', 'XmDv24V.png');
+loadSprite('giant-soldier', 'GF9fCxJ.png')
 
 scene("game",() => {
 
     const map = [
-        'a        ',
-        'a        ',
-        'a        ',
-        'a        ',
-        'a        ',
-        'a        ',
-        'a        ',
-        'a        ',
-        'aaaaaaaaa',
+        'accccc cb',
+        'a       b',
+        'a       b',
+        'a     @ b',
+        'a       b',
+        'a       b',
+        '        b',
+        'a       b',
+        'ddddddddd',
     ]
 
     const levelCfg = {
         width: 48,
         height: 48,
-        'a': [sprite('left-wall', solid())]
+        'a': [sprite('left-wall', solid())],
+        'b': [sprite('right-wall'),solid()],
+        'c': [sprite('top-wall'),solid()],
+        'd': [sprite('bottom-wall'),solid()],
+        'w': [sprite('top-right-wall'),solid()],
+        'x': [sprite('bottom-left-wall'),solid()],
+        'y': [sprite('top-left-wall'),solid()],
+        'z': [sprite('bottom-right-wall'),solid()],
+        '^': [sprite('bottom-right-wall'),solid()],
+        '%': [sprite('left-door'),solid()],
+        '$': [sprite('stairs'),solid()],
+        '*': [sprite('slicer'),solid()],
+        '}': [sprite('skeletor'),solid()],
+        ')': [sprite('lanterns'),solid()],
+        '(': [sprite('fire-pot'),solid()],
+        '@': [sprite('giant-soldier'),solid()]
     }
     addLevel(map, levelCfg);
 
