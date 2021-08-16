@@ -6,6 +6,8 @@ kaboom({
     clearColor: [0, 0, 1, 1],
   })
 
+  const MOVE_SPEED = 120
+
 loadRoot('https://i.imgur.com/');
 loadSprite('link-going-left', 'uDXrWR3.png');
 loadSprite('link-going-right', 'B4Zbyzs.png');
@@ -30,20 +32,21 @@ loadSprite('stairs', 'LIryyEl.png');
 loadSprite('back-ground', 'HfiQS1I.png');
 loadSprite('grass', 'bFUrqrI.png');
 loadSprite('hole', 'XmDv24V.png');
-loadSprite('giant-soldier', 'GF9fCxJ.png')
+loadSprite('giant-soldier', 'Ab8AsJI.png')
 
-scene("game",() => {
+scene("game",({level, score}) => {
+    layers(['bg', 'obj', 'ui'], 'obj')
 
     const map = [
-        'accccc cb',
+        'ac)ccc[cb',
         'a       b',
+        'a      *b',
         'a       b',
-        'a     @ b',
+        'a   (   b',
         'a       b',
+        '%       b',
         'a       b',
-        '        b',
-        'a       b',
-        'ddddddddd',
+        'ddd)ddddd',
     ]
 
     const levelCfg = {
@@ -59,15 +62,47 @@ scene("game",() => {
         'z': [sprite('bottom-right-wall'),solid()],
         '^': [sprite('bottom-right-wall'),solid()],
         '%': [sprite('left-door'),solid()],
-        '$': [sprite('stairs'),solid()],
-        '*': [sprite('slicer'),solid()],
-        '}': [sprite('skeletor'),solid()],
+        '$': [sprite('stairs')],
+        '*': [sprite('slicer')],
+        '}': [sprite('skeletor')],
         ')': [sprite('lanterns'),solid()],
         '(': [sprite('fire-pot'),solid()],
+        '[': [sprite('top-door')],
         '@': [sprite('giant-soldier'),solid()]
     }
     addLevel(map, levelCfg);
 
-});
+    // add(sprite[('bg'), layer('bg')])
 
-start("game")
+    add([
+        text('0'),
+        pos(400, 450),
+        layer('ui'),
+        {
+            value: score
+        },
+        scale(2)
+    ])
+
+    add([text('level ' + parseInt(level + 1)), pos(400,485), scale(2)])
+
+    const player = add([
+        sprite('link-going-right'),
+        pos(50, 190),
+        {   //right by default 
+            dir: vec2(1,0),
+        }
+    ])
+
+    player.action(() => {
+        player.resolve() 
+    })
+
+    keyDown('left', () => {
+        player.changeSprite('link-going-left')
+        player.move(-MOVE_SPEED, 0)
+        player.dir = vec2(-1, 0)
+      })
+})
+
+start("game", {level: 0, score: 0})
