@@ -37,7 +37,8 @@ loadSprite('giant-soldier', 'Ab8AsJI.png')
 scene("game",({level, score}) => {
     layers(['bg', 'obj', 'ui'], 'obj')
 
-    const map = [
+    const maps = [
+        [
         'ac)ccc[cb',
         'a       b',
         'a      *b',
@@ -47,6 +48,19 @@ scene("game",({level, score}) => {
         '%       b',
         'a       b',
         'ddd)ddddd',
+        ],
+        [
+        'ac)ccccccb',
+        'a       $b',
+        'a    }   b',
+        'a        b',
+        'a   ( }  b',
+        'a        b',
+        '%  } }   b',
+        'a  }     b',
+        'ddd)ddddd)',
+        ]
+        
     ]
 
     const levelCfg = {
@@ -62,19 +76,20 @@ scene("game",({level, score}) => {
         'z': [sprite('bottom-right-wall'),solid()],
         '^': [sprite('bottom-right-wall'),solid()],
         '%': [sprite('left-door'),solid()],
-        '$': [sprite('stairs')],
+        '$': [sprite('stairs'), 'next-level'],
         '*': [sprite('slicer')],
         '}': [sprite('skeletor')],
         ')': [sprite('lanterns'),solid()],
         '(': [sprite('fire-pot'),solid()],
-        '[': [sprite('top-door')],
+        '[': [sprite('top-door'), 'next-level'],
         '@': [sprite('giant-soldier'),solid()]
     }
-    addLevel(map, levelCfg);
+
+    addLevel(maps[level], levelCfg);
 
     // add(sprite[('bg'), layer('bg')])
 
-    add([
+    const scoreLabel = add([
         text('0'),
         pos(400, 450),
         layer('ui'),
@@ -98,11 +113,39 @@ scene("game",({level, score}) => {
         player.resolve() 
     })
 
+    player.overlaps('next-level', () => {
+        go("game", {
+            level: (level +1) % maps.length, 
+            score: scoreLabel.value
+        })
+    })
+
     keyDown('left', () => {
         player.changeSprite('link-going-left')
         player.move(-MOVE_SPEED, 0)
         player.dir = vec2(-1, 0)
       })
+
+    keyDown('right', () => {
+        player.changeSprite('link-going-right')
+        player.move(MOVE_SPEED, 0)
+        player.dir = vec2(1, 0)
+    })
+
+    keyDown('up', () => {
+        player.changeSprite('link-going-up')
+        player.move(0, -MOVE_SPEED)
+        player.dir = vec2(0, -1)
+    })
+
+    keyDown('down', () => {
+        player.changeSprite('link-going-down')
+        player.move(0, MOVE_SPEED)
+        player.dir = vec2(0, 1)
+    })
+
+    action('')
+
 })
 
 start("game", {level: 0, score: 0})

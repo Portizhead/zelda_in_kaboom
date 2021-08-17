@@ -1,0 +1,13 @@
+to add the sprite:
+add([
+  sprite('name_of_sprite)
+  scale(0.5) this is to stablish the size of the sprite
+  pos(20, 20) this is to confirm his position coordinate you know x, y
+])
+
+to add a level use function addLevel
+addLevel([
+  '    ',
+  '    ',  this is like drawing the level
+  '    ', 
+])
